@@ -1,0 +1,1 @@
+ALTER TABLE "mortgages" ADD COLUMN "user_id" text NOT NULL;

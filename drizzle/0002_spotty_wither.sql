@@ -1,0 +1,1 @@
+ALTER TABLE "mortgages" ADD COLUMN "mortgage_term_years" integer;

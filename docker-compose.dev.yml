@@ -1,0 +1,12 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "4567:3000"
+    env_file:
+      - .env.local
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
