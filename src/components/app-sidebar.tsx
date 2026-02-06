@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Building2, Users } from "lucide-react";
+import { Home, Building2, Users, UserPlus } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
@@ -21,6 +21,7 @@ const navItems = [
   { title: "Dashboard", href: "/", icon: Home },
   { title: "Bank Offers", href: "/offers", icon: Building2 },
   { title: "Contacts", href: "/contacts", icon: Users },
+  { title: "Members", href: "/members", icon: UserPlus },
 ];
 
 export function AppSidebar() {
