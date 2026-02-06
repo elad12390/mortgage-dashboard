@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Building2, Users, UserPlus } from "lucide-react";
+import { Home, Building2, Users, UserPlus, Landmark, Receipt, CalendarDays } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
@@ -21,6 +21,9 @@ import { MortgageSwitcher } from "@/components/mortgage-switcher";
 const navItems = [
   { title: "Dashboard", href: "/", icon: Home },
   { title: "Bank Offers", href: "/offers", icon: Building2 },
+  { title: "הלוואות", href: "/loans", icon: Landmark },
+  { title: "הוצאות", href: "/costs", icon: Receipt },
+  { title: "ציר זמן", href: "/timeline", icon: CalendarDays },
   { title: "Contacts", href: "/contacts", icon: Users },
   { title: "Members", href: "/members", icon: UserPlus },
 ];
