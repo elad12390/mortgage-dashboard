@@ -119,3 +119,14 @@ Adding financial tracking to mortgage dashboard: loans (for 25% down payment), e
 **Verification:**
 - ✅ lsp_diagnostics clean on src/app/actions/loans.ts
 - ✅ npm run build passes (warnings only)
+
+## [2026-02-06 19:45] Task 4: Costs Server Actions - COMPLETE
+
+**What was done:**
+- Added `src/app/actions/costs.ts` with CRUD + summary actions for extra costs.
+- Implemented status auto-calculation from paidAmount vs amount for create/update.
+- Summary computes totals plus overdue/upcoming counts based on dueDate and status.
+
+**Verification:**
+- ✅ lsp_diagnostics clean on src/app/actions/costs.ts
+- ✅ npm run build passes (warnings only)

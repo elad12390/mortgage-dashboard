@@ -386,7 +386,7 @@ Task 1 (DB schema: loans, extra_costs, payment_milestones tables + activity_even
 
 ---
 
-- [ ] 4. Create extra costs server actions (`src/app/actions/costs.ts`)
+- [x] 4. Create extra costs server actions (`src/app/actions/costs.ts`)
 
   **What to do**:
   - New file `src/app/actions/costs.ts` with these server actions:
