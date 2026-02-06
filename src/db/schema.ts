@@ -7,6 +7,7 @@ import {
   integer,
   pgEnum,
   jsonb,
+  unique,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -90,10 +91,40 @@ export const activityEvents = pgTable("activity_events", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+export const mortgageMembers = pgTable(
+  "mortgage_members",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    mortgageId: uuid("mortgage_id")
+      .notNull()
+      .references(() => mortgages.id, { onDelete: "cascade" }),
+    userId: text("user_id").notNull(),
+    joinedAt: timestamp("joined_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => ({
+    uniqueUserMortgage: unique().on(table.userId, table.mortgageId),
+  })
+);
+
+export const mortgageInvites = pgTable("mortgage_invites", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  mortgageId: uuid("mortgage_id")
+    .notNull()
+    .references(() => mortgages.id, { onDelete: "cascade" }),
+  token: text("token").notNull().unique(),
+  createdByUserId: text("created_by_user_id").notNull(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  usedByUserId: text("used_by_user_id"),
+  usedAt: timestamp("used_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const mortgagesRelations = relations(mortgages, ({ many }) => ({
   bankOffers: many(bankOffers),
   contacts: many(contacts),
   activityEvents: many(activityEvents),
+  members: many(mortgageMembers),
+  invites: many(mortgageInvites),
 }));
 
 export const bankOffersRelations = relations(bankOffers, ({ one, many }) => ({
@@ -135,6 +166,20 @@ export const activityEventsRelations = relations(activityEvents, ({ one }) => ({
   }),
 }));
 
+export const mortgageMembersRelations = relations(mortgageMembers, ({ one }) => ({
+  mortgage: one(mortgages, {
+    fields: [mortgageMembers.mortgageId],
+    references: [mortgages.id],
+  }),
+}));
+
+export const mortgageInvitesRelations = relations(mortgageInvites, ({ one }) => ({
+  mortgage: one(mortgages, {
+    fields: [mortgageInvites.mortgageId],
+    references: [mortgages.id],
+  }),
+}));
+
 export type Mortgage = typeof mortgages.$inferSelect;
 export type NewMortgage = typeof mortgages.$inferInsert;
 export type BankOffer = typeof bankOffers.$inferSelect;
@@ -145,3 +190,7 @@ export type Contact = typeof contacts.$inferSelect;
 export type NewContact = typeof contacts.$inferInsert;
 export type ActivityEvent = typeof activityEvents.$inferSelect;
 export type NewActivityEvent = typeof activityEvents.$inferInsert;
+export type MortgageMember = typeof mortgageMembers.$inferSelect;
+export type NewMortgageMember = typeof mortgageMembers.$inferInsert;
+export type MortgageInvite = typeof mortgageInvites.$inferSelect;
+export type NewMortgageInvite = typeof mortgageInvites.$inferInsert;
