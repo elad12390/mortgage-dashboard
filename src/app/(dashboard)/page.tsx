@@ -156,20 +156,20 @@ export default async function DashboardPage() {
       </div>
 
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold">מימון והוצאות</h3>
+        <h3 className="text-lg font-semibold">Financing & Costs</h3>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Link href="/loans">
             <Card className="cursor-pointer hover:bg-accent transition-colors">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  הלוואות פעילות
+                  Active Loans
                 </CardTitle>
                 <Landmark className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{stats!.activeLoansCount}</div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  ₪{stats!.totalMonthlyRepayments.toLocaleString()} לחודש
+                  ₪{stats!.totalMonthlyRepayments.toLocaleString()}/mo
                 </p>
               </CardContent>
             </Card>
@@ -179,7 +179,7 @@ export default async function DashboardPage() {
             <Card className="cursor-pointer hover:bg-accent transition-colors">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  סה"כ הלוואות
+                  Total Loans
                 </CardTitle>
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -195,7 +195,7 @@ export default async function DashboardPage() {
             <Card className="cursor-pointer hover:bg-accent transition-colors">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  הוצאות נותרות
+                  Remaining Costs
                 </CardTitle>
                 <Receipt className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -205,7 +205,7 @@ export default async function DashboardPage() {
                 </div>
                 {stats!.overdueCostsCount > 0 && (
                   <Badge variant="destructive" className="mt-1">
-                    {stats!.overdueCostsCount} באיחור
+                    {stats!.overdueCostsCount} overdue
                   </Badge>
                 )}
               </CardContent>
@@ -216,7 +216,7 @@ export default async function DashboardPage() {
             <Card className="cursor-pointer hover:bg-accent transition-colors">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  תשלום הבא
+                  Next Payment
                 </CardTitle>
                 <CalendarDays className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -231,7 +231,7 @@ export default async function DashboardPage() {
                     </p>
                   </>
                 ) : (
-                  <div className="text-sm text-muted-foreground">אין תשלומים קרובים</div>
+                  <div className="text-sm text-muted-foreground">No upcoming payments</div>
                 )}
               </CardContent>
             </Card>

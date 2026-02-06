@@ -44,14 +44,14 @@ export default async function TimelinePage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">ציר זמן</h2>
+        <h2 className="text-2xl font-bold">Timeline</h2>
         <MilestoneDialog mortgageId={mortgage.id} />
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">תשלום הבא</CardTitle>
+            <CardTitle className="text-sm font-medium">Next Payment</CardTitle>
           </CardHeader>
           <CardContent>
             {nextPayment ? (
@@ -65,28 +65,28 @@ export default async function TimelinePage() {
                 </p>
               </div>
             ) : (
-              <div className="text-sm text-muted-foreground">אין תשלומים קרובים</div>
+                <div className="text-sm text-muted-foreground">No upcoming payments</div>
             )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">סה"כ קרוב</CardTitle>
+            <CardTitle className="text-sm font-medium">Upcoming Total</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               ₪{totalUpcoming.toLocaleString()}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              {upcomingEntries.length} תשלומים
+              {upcomingEntries.length} payments
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">הושלמו</CardTitle>
+            <CardTitle className="text-sm font-medium">Completed</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{completedEntries.length}</div>
@@ -96,23 +96,23 @@ export default async function TimelinePage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>אבני דרך</CardTitle>
+              <CardTitle>Milestones</CardTitle>
         </CardHeader>
         <CardContent>
           {milestones.length === 0 ? (
             <div className="text-center py-6">
-              <p className="text-muted-foreground mb-4">אין אבני דרך עדיין</p>
+              <p className="text-muted-foreground mb-4">No milestones yet</p>
               <MilestoneDialog mortgageId={mortgage.id} />
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>שם</TableHead>
-                  <TableHead>סכום (₪)</TableHead>
-                  <TableHead>תאריך</TableHead>
-                  <TableHead>סטטוס</TableHead>
-                  <TableHead className="text-left">פעולות</TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Amount (₪)</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-left">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -129,7 +129,7 @@ export default async function TimelinePage() {
                       <Badge
                         variant={milestone.isPaid === 1 ? "default" : "secondary"}
                       >
-                        {milestone.isPaid === 1 ? "שולם" : "לא שולם"}
+                          {milestone.isPaid === 1 ? "Paid" : "Unpaid"}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -166,12 +166,12 @@ export default async function TimelinePage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>כל האירועים</CardTitle>
+              <CardTitle>All Events</CardTitle>
         </CardHeader>
         <CardContent>
           {timeline.length === 0 ? (
             <div className="text-center py-6 text-muted-foreground">
-              אין אירועים בציר הזמן
+                No timeline events
             </div>
           ) : (
             <div className="space-y-4">
@@ -211,7 +211,7 @@ export default async function TimelinePage() {
                         }
                         className="mt-1"
                       >
-                        {isPaid ? "שולם" : isOverdue ? "באיחור" : "קרוב"}
+                        {isPaid ? "Paid" : isOverdue ? "Overdue" : "Upcoming"}
                       </Badge>
                     </div>
                   </div>

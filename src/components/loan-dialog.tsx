@@ -68,10 +68,10 @@ export function LoanDialog({ mortgageId, loan, children }: LoanDialogProps) {
         await createLoan(mortgageId, data);
       }
 
-      toast.success("ההלוואה נשמרה בהצלחה");
+      toast.success("Loan saved successfully");
       setOpen(false);
     } catch {
-      toast.error("שגיאה בשמירת ההלוואה");
+      toast.error("Error saving loan");
     }
   }
 
@@ -89,29 +89,29 @@ export function LoanDialog({ mortgageId, loan, children }: LoanDialogProps) {
         ) : (
           <Button size="sm">
             <Plus className="mr-2 h-4 w-4" />
-            הלוואה חדשה
+            New Loan
           </Button>
         )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {loan ? "עריכת הלוואה" : "הלוואה חדשה"}
+            {loan ? "Edit Loan" : "New Loan"}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label>שם מלווה</Label>
+            <Label>Lender Name</Label>
             <Input
               value={lenderName}
               onChange={(e) => setLenderName(e.target.value)}
-              placeholder="שם המלווה"
+              placeholder="Lender name"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label>סכום (₪)</Label>
+            <Label>Amount (₪)</Label>
             <Input
               type="number"
               step="0.01"
@@ -124,7 +124,7 @@ export function LoanDialog({ mortgageId, loan, children }: LoanDialogProps) {
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label>ריבית שנתית (%)</Label>
+              <Label>Annual Interest (%)</Label>
               <Input
                 type="number"
                 step="0.01"
@@ -134,7 +134,7 @@ export function LoanDialog({ mortgageId, loan, children }: LoanDialogProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label>תשלום חודשי (₪)</Label>
+              <Label>Monthly Payment (₪)</Label>
               <Input
                 type="number"
                 step="0.01"
@@ -147,7 +147,7 @@ export function LoanDialog({ mortgageId, loan, children }: LoanDialogProps) {
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label>תקופה (חודשים)</Label>
+              <Label>Term (months)</Label>
               <Input
                 type="number"
                 value={termMonths}
@@ -156,7 +156,7 @@ export function LoanDialog({ mortgageId, loan, children }: LoanDialogProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label>תאריך התחלה</Label>
+              <Label>Start Date</Label>
               <Input
                 type="date"
                 value={startDate}
@@ -166,7 +166,7 @@ export function LoanDialog({ mortgageId, loan, children }: LoanDialogProps) {
           </div>
 
           <div className="space-y-2">
-            <Label>סטטוס</Label>
+            <Label>Status</Label>
             <Select
               value={status}
               onValueChange={(value) =>
@@ -189,7 +189,7 @@ export function LoanDialog({ mortgageId, loan, children }: LoanDialogProps) {
           </div>
 
           <Button type="submit" className="w-full">
-            שמור
+            Save
           </Button>
         </form>
       </DialogContent>

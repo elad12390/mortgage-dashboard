@@ -71,7 +71,7 @@ export default async function OfferDetailPage({ params }: PageProps) {
           <h2 className="text-2xl font-bold">{offer.bankName}</h2>
           {getBankParent(offer.bankName) && (
             <span className="text-sm text-muted-foreground">
-              שייך ל{getBankParent(offer.bankName)}
+              Subsidiary of {getBankParent(offer.bankName)}
             </span>
           )}
           <div className="flex items-center gap-2 mt-1">
@@ -139,7 +139,7 @@ export default async function OfferDetailPage({ params }: PageProps) {
         <TabsContent value="tracks" className="mt-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>מסלולים (Tracks)</CardTitle>
+              <CardTitle>Tracks</CardTitle>
               <TrackDialog offerId={id} />
             </CardHeader>
             <CardContent className="p-0">

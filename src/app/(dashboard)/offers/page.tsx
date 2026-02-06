@@ -67,7 +67,7 @@ export default async function OffersPage() {
                       </Link>
                       {getBankParent(offer.bankName) && (
                         <div className="text-xs text-muted-foreground">
-                          שייך ל{getBankParent(offer.bankName)}
+                          Subsidiary of {getBankParent(offer.bankName)}
                         </div>
                       )}
                     </TableCell>

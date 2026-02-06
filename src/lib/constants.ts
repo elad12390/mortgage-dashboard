@@ -1,21 +1,21 @@
 export const TRACK_TYPE_LABELS: Record<string, string> = {
-  prime: "פריים",
-  fixed_unlinked: "קבועה לא צמודה",
-  fixed_linked: "קבועה צמודה",
-  variable_every_5: "משתנה כל 5 שנים",
-  variable_every_year: "משתנה כל שנה",
-  variable_linked: "משתנה צמודה",
-  other: "אחר",
+  prime: "Prime",
+  fixed_unlinked: "Fixed Unlinked",
+  fixed_linked: "Fixed Linked",
+  variable_every_5: "Variable Every 5 Years",
+  variable_every_year: "Variable Every Year",
+  variable_linked: "Variable Linked",
+  other: "Other",
 };
 
 export const STATUS_LABELS: Record<string, string> = {
-  initial_inquiry: "פנייה ראשונית",
-  in_progress: "בתהליך",
-  offer_received: "התקבלה הצעה",
-  approved: "אושר",
-  rejected: "נדחה",
-  signed: "נחתם",
-  cancelled: "בוטל",
+  initial_inquiry: "Initial Inquiry",
+  in_progress: "In Progress",
+  offer_received: "Offer Received",
+  approved: "Approved",
+  rejected: "Rejected",
+  signed: "Signed",
+  cancelled: "Cancelled",
 };
 
 export const STATUS_COLORS: Record<string, string> = {
@@ -85,11 +85,11 @@ export const REQUEST_STATUSES = [
 ] as const;
 
 export const loanStatusLabels: Record<string, string> = {
-  pending: "ממתין",
-  approved: "אושר",
-  received: "התקבל",
-  repaying: "בהחזר",
-  completed: "הושלם",
+  pending: "Pending",
+  approved: "Approved",
+  received: "Received",
+  repaying: "Repaying",
+  completed: "Completed",
 };
 
 export const loanStatusColors: Record<string, string> = {
@@ -101,20 +101,20 @@ export const loanStatusColors: Record<string, string> = {
 };
 
 export const costCategoryLabels: Record<string, string> = {
-  lawyer: "עורך דין",
-  purchase_tax: "מס רכישה",
-  renovation: "שיפוץ",
-  broker: "יועץ משכנתא",
-  appraisal: "שמאות",
-  moving: "הובלה",
-  insurance: "ביטוח",
-  other: "אחר",
+  lawyer: "Lawyer",
+  purchase_tax: "Purchase Tax",
+  renovation: "Renovation",
+  broker: "Mortgage Broker",
+  appraisal: "Appraisal",
+  moving: "Moving",
+  insurance: "Insurance",
+  other: "Other",
 };
 
 export const costPaymentStatusLabels: Record<string, string> = {
-  unpaid: "לא שולם",
-  partially_paid: "שולם חלקית",
-  fully_paid: "שולם",
+  unpaid: "Unpaid",
+  partially_paid: "Partially Paid",
+  fully_paid: "Fully Paid",
 };
 
 export const costPaymentStatusColors: Record<string, string> = {
@@ -124,10 +124,10 @@ export const costPaymentStatusColors: Record<string, string> = {
 };
 
 export const milestoneTypePresets: Record<string, string> = {
-  contract_signing: "חתימת חוזה",
-  payment_30_days: "תשלום 30 יום",
-  payment_60_days: "תשלום 60 יום",
-  key_handover: "מסירת מפתח",
-  mortgage_start: "תחילת משכנתא",
-  custom: "מותאם אישית",
+  contract_signing: "Contract Signing",
+  payment_30_days: "30-Day Payment",
+  payment_60_days: "60-Day Payment",
+  key_handover: "Key Handover",
+  mortgage_start: "Mortgage Start",
+  custom: "Custom",
 };

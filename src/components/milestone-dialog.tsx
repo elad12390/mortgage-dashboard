@@ -63,7 +63,7 @@ export function MilestoneDialog({ mortgageId, milestone, children }: MilestoneDi
           : milestoneTypePresets[namePreset as keyof typeof milestoneTypePresets];
 
       if (!finalName) {
-        toast.error("יש להזין שם לאבן הדרך");
+        toast.error("Please enter a milestone name");
         return;
       }
 
@@ -81,10 +81,10 @@ export function MilestoneDialog({ mortgageId, milestone, children }: MilestoneDi
         await createMilestone(mortgageId, data);
       }
 
-      toast.success("אבן הדרך נשמרה בהצלחה");
+      toast.success("Milestone saved successfully");
       setOpen(false);
     } catch {
-      toast.error("שגיאה בשמירת אבן הדרך");
+      toast.error("Error saving milestone");
     }
   }
 
@@ -102,19 +102,19 @@ export function MilestoneDialog({ mortgageId, milestone, children }: MilestoneDi
         ) : (
           <Button size="sm">
             <Plus className="mr-2 h-4 w-4" />
-            אבן דרך חדשה
+            New Milestone
           </Button>
         )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {milestone ? "עריכת אבן דרך" : "אבן דרך חדשה"}
+            {milestone ? "Edit Milestone" : "New Milestone"}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label>סוג אבן דרך</Label>
+            <Label>Milestone Type</Label>
             <Select
               value={namePreset}
               onValueChange={(value) => {
@@ -125,7 +125,7 @@ export function MilestoneDialog({ mortgageId, milestone, children }: MilestoneDi
               }}
             >
               <SelectTrigger>
-                <SelectValue placeholder="בחר סוג אבן דרך" />
+                <SelectValue placeholder="Select milestone type" />
               </SelectTrigger>
               <SelectContent>
                 {Object.entries(milestoneTypePresets).map(([key, label]) => (
@@ -139,18 +139,18 @@ export function MilestoneDialog({ mortgageId, milestone, children }: MilestoneDi
 
           {namePreset === "custom" && (
             <div className="space-y-2">
-              <Label>שם מותאם אישית</Label>
-              <Input
-                value={customName}
-                onChange={(e) => setCustomName(e.target.value)}
-                placeholder="הזן שם אבן דרך"
+            <Label>Custom Name</Label>
+            <Input
+              value={customName}
+              onChange={(e) => setCustomName(e.target.value)}
+              placeholder="Enter milestone name"
                 required
               />
             </div>
           )}
 
           <div className="space-y-2">
-            <Label>סכום (₪)</Label>
+            <Label>Amount (₪)</Label>
             <Input
               type="number"
               step="0.01"
@@ -162,7 +162,7 @@ export function MilestoneDialog({ mortgageId, milestone, children }: MilestoneDi
           </div>
 
           <div className="space-y-2">
-            <Label>תאריך</Label>
+            <Label>Date</Label>
             <Input
               type="date"
               value={date}
@@ -178,22 +178,21 @@ export function MilestoneDialog({ mortgageId, milestone, children }: MilestoneDi
               onCheckedChange={(checked: boolean) => setIsPaid(checked === true)}
             />
             <Label htmlFor="isPaid" className="cursor-pointer">
-              שולם
+                Paid
             </Label>
           </div>
 
           <div className="space-y-2">
-            <Label>הערות</Label>
-            <Textarea
+            <Label>Notes</Label>
+            <Input
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="הערות נוספות (אופציונלי)"
-              rows={3}
+              placeholder="Additional notes (optional)"
             />
           </div>
 
           <Button type="submit" className="w-full">
-            שמור
+            Save
           </Button>
         </form>
       </DialogContent>

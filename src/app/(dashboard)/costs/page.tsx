@@ -39,14 +39,14 @@ export default async function CostsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">הוצאות נוספות</h2>
+        <h2 className="text-2xl font-bold">Extra Costs</h2>
         <CostDialog mortgageId={mortgage.id} />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">סה"כ הוצאות</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Costs</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -57,7 +57,7 @@ export default async function CostsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">שולם</CardTitle>
+            <CardTitle className="text-sm font-medium">Paid</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -68,7 +68,7 @@ export default async function CostsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">נותר לתשלום</CardTitle>
+            <CardTitle className="text-sm font-medium">Remaining</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -79,7 +79,7 @@ export default async function CostsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">באיחור</CardTitle>
+            <CardTitle className="text-sm font-medium">Overdue</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold flex items-center gap-2">
@@ -99,7 +99,7 @@ export default async function CostsPage() {
           {costs.length === 0 ? (
             <div className="p-6 text-center">
               <p className="text-muted-foreground mb-4">
-                אין הוצאות נוספות עדיין
+                No extra costs yet
               </p>
               <CostDialog mortgageId={mortgage.id} />
             </div>
@@ -107,14 +107,14 @@ export default async function CostsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>קטגוריה</TableHead>
-                  <TableHead>תיאור</TableHead>
-                  <TableHead>סכום (₪)</TableHead>
-                  <TableHead>שולם (₪)</TableHead>
-                  <TableHead>נותר (₪)</TableHead>
-                  <TableHead>תאריך יעד</TableHead>
-                  <TableHead>סטטוס</TableHead>
-                  <TableHead className="text-left">פעולות</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Amount (₪)</TableHead>
+                  <TableHead>Paid (₪)</TableHead>
+                  <TableHead>Remaining (₪)</TableHead>
+                  <TableHead>Due Date</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-left">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -183,7 +183,7 @@ export default async function CostsPage() {
                                 variant="outline"
                                 size="sm"
                               >
-                                סמן כשולם
+                                Mark as Paid
                               </Button>
                             </form>
                           )}

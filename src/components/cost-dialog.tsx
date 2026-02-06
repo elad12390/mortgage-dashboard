@@ -72,10 +72,10 @@ export function CostDialog({ mortgageId, cost, children }: CostDialogProps) {
         await createCost(mortgageId, data);
       }
 
-      toast.success("ההוצאה נשמרה בהצלחה");
+      toast.success("Cost saved successfully");
       setOpen(false);
     } catch {
-      toast.error("שגיאה בשמירת ההוצאה");
+      toast.error("Error saving cost");
     }
   }
 
@@ -95,25 +95,25 @@ export function CostDialog({ mortgageId, cost, children }: CostDialogProps) {
         ) : (
           <Button size="sm">
             <Plus className="mr-2 h-4 w-4" />
-            הוצאה חדשה
+            New Cost
           </Button>
         )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {cost ? "עריכת הוצאה" : "הוצאה חדשה"}
+            {cost ? "Edit Cost" : "New Cost"}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label>קטגוריה</Label>
+            <Label>Category</Label>
             <Select
               value={category}
               onValueChange={setCategory}
             >
               <SelectTrigger>
-                <SelectValue placeholder="בחר קטגוריה" />
+                <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
                 {Object.entries(costCategoryLabels).map(([key, label]) => (
@@ -127,27 +127,27 @@ export function CostDialog({ mortgageId, cost, children }: CostDialogProps) {
 
           {category === "other" && (
             <div className="space-y-2">
-              <Label>שם קטגוריה מותאם</Label>
-              <Input
-                value={customCategory}
-                onChange={(e) => setCustomCategory(e.target.value)}
-                placeholder="הזן שם קטגוריה"
+            <Label>Custom Category Name</Label>
+            <Input
+              value={customCategory}
+              onChange={(e) => setCustomCategory(e.target.value)}
+              placeholder="Enter category name"
                 required
               />
             </div>
           )}
 
           <div className="space-y-2">
-            <Label>תיאור (אופציונלי)</Label>
+            <Label>Description (optional)</Label>
             <Input
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="תיאור ההוצאה"
+              placeholder="Cost description"
             />
           </div>
 
           <div className="space-y-2">
-            <Label>סכום (₪)</Label>
+            <Label>Amount (₪)</Label>
             <Input
               type="number"
               step="0.01"
@@ -159,7 +159,7 @@ export function CostDialog({ mortgageId, cost, children }: CostDialogProps) {
           </div>
 
           <div className="space-y-2">
-            <Label>סכום ששולם (₪)</Label>
+            <Label>Amount Paid (₪)</Label>
             <Input
               type="number"
               step="0.01"
@@ -170,7 +170,7 @@ export function CostDialog({ mortgageId, cost, children }: CostDialogProps) {
           </div>
 
           <div className="space-y-2">
-            <Label>תאריך תשלום (אופציונלי)</Label>
+            <Label>Due Date (optional)</Label>
             <Input
               type="date"
               value={dueDate}
@@ -179,25 +179,23 @@ export function CostDialog({ mortgageId, cost, children }: CostDialogProps) {
           </div>
 
           <div className="space-y-2">
-            <Label>הערות (אופציונלי)</Label>
-            <textarea
+            <Label>Notes (optional)</Label>
+            <Input
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="הערות נוספות"
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              rows={3}
+              placeholder="Additional notes"
             />
           </div>
 
           <div className="space-y-2">
-            <Label>סטטוס</Label>
+            <Label>Status</Label>
             <div className="px-3 py-2 rounded-md border border-input bg-muted text-sm">
               {costPaymentStatusLabels[status]}
             </div>
           </div>
 
           <Button type="submit" className="w-full">
-            שמור
+            Save
           </Button>
         </form>
       </DialogContent>

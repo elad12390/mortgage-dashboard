@@ -39,7 +39,7 @@ export default async function LoansPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">הלוואות</h2>
+        <h2 className="text-2xl font-bold">Loans</h2>
         <LoanDialog mortgageId={mortgage.id} />
       </div>
 
@@ -47,7 +47,7 @@ export default async function LoansPage() {
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">סה"כ הלוואות</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Loans</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -59,7 +59,7 @@ export default async function LoansPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              תשלום חודשי כולל
+              Total Monthly Payment
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -71,7 +71,7 @@ export default async function LoansPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">הלוואות פעילות</CardTitle>
+            <CardTitle className="text-sm font-medium">Active Loans</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{activeCount}</div>
@@ -84,19 +84,19 @@ export default async function LoansPage() {
         <CardContent className="p-0">
           {loans.length === 0 ? (
             <div className="p-6 text-center text-muted-foreground">
-              אין הלוואות עדיין. צור את ההלוואה הראשונה שלך.
+              No loans yet. Create your first loan.
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>שם מלווה</TableHead>
-                  <TableHead>סכום</TableHead>
-                  <TableHead>ריבית</TableHead>
-                  <TableHead>תשלום חודשי</TableHead>
-                  <TableHead>תקופה</TableHead>
-                  <TableHead>סטטוס</TableHead>
-                  <TableHead>תאריך התחלה</TableHead>
+                  <TableHead>Lender</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Interest</TableHead>
+                  <TableHead>Monthly Payment</TableHead>
+                  <TableHead>Term</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Start Date</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -120,7 +120,7 @@ export default async function LoansPage() {
                         : "-"}
                     </TableCell>
                     <TableCell>
-                      {loan.termMonths ? `${loan.termMonths} חודשים` : "-"}
+                      {loan.termMonths ? `${loan.termMonths} months` : "-"}
                     </TableCell>
                     <TableCell>
                       <Badge

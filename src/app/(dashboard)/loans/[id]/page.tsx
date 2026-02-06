@@ -52,7 +52,7 @@ export default async function LoanDetailPage({ params }: PageProps) {
               {loanStatusLabels[loan.status]}
             </Badge>
             <span className="text-sm text-muted-foreground">
-              נוצר {loan.createdAt.toLocaleDateString("he-IL")}
+              Created {loan.createdAt.toLocaleDateString("en-US")}
             </span>
           </div>
         </div>
@@ -61,7 +61,7 @@ export default async function LoanDetailPage({ params }: PageProps) {
             "use server";
             await deleteLoan(id);
           }}
-          label="מחק הלוואה"
+          label="Delete Loan"
         />
       </div>
 
@@ -69,7 +69,7 @@ export default async function LoanDetailPage({ params }: PageProps) {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              סכום הלוואה
+              Loan Amount
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -82,7 +82,7 @@ export default async function LoanDetailPage({ params }: PageProps) {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              ריבית שנתית
+              Annual Interest
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -95,7 +95,7 @@ export default async function LoanDetailPage({ params }: PageProps) {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              תשלום חודשי
+              Monthly Payment
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -110,12 +110,12 @@ export default async function LoanDetailPage({ params }: PageProps) {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              תקופה
+              Term
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-xl font-bold">
-              {loan.termMonths ? `${loan.termMonths} חודשים` : "—"}
+              {loan.termMonths ? `${loan.termMonths} months` : "—"}
             </div>
           </CardContent>
         </Card>
@@ -123,14 +123,14 @@ export default async function LoanDetailPage({ params }: PageProps) {
 
       <Tabs defaultValue="activity">
         <TabsList>
-          <TabsTrigger value="activity">פעילות</TabsTrigger>
-          <TabsTrigger value="details">פרטים</TabsTrigger>
+          <TabsTrigger value="activity">Activity</TabsTrigger>
+          <TabsTrigger value="details">Details</TabsTrigger>
         </TabsList>
 
         <TabsContent value="activity" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle>פעילות</CardTitle>
+              <CardTitle>Activity</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-sm text-muted-foreground">
@@ -143,41 +143,41 @@ export default async function LoanDetailPage({ params }: PageProps) {
         <TabsContent value="details" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle>פרטי הלוואה</CardTitle>
+              <CardTitle>Loan Details</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <div className="text-sm font-medium text-muted-foreground mb-1">
-                    שם מלווה
+                    Lender
                   </div>
                   <div>{loan.lenderName}</div>
                 </div>
 
                 <div>
                   <div className="text-sm font-medium text-muted-foreground mb-1">
-                    סטטוס
+                    Status
                   </div>
                   <div>{loanStatusLabels[loan.status]}</div>
                 </div>
 
                 <div>
                   <div className="text-sm font-medium text-muted-foreground mb-1">
-                    סכום
+                    Amount
                   </div>
                   <div>₪{Number(loan.amount).toLocaleString()}</div>
                 </div>
 
                 <div>
                   <div className="text-sm font-medium text-muted-foreground mb-1">
-                    ריבית שנתית
+                    Annual Interest
                   </div>
                   <div>{loan.interestRate ? `${loan.interestRate}%` : "—"}</div>
                 </div>
 
                 <div>
                   <div className="text-sm font-medium text-muted-foreground mb-1">
-                    תשלום חודשי
+                    Monthly Payment
                   </div>
                   <div>
                     {loan.monthlyRepayment
@@ -188,16 +188,16 @@ export default async function LoanDetailPage({ params }: PageProps) {
 
                 <div>
                   <div className="text-sm font-medium text-muted-foreground mb-1">
-                    תקופה
+                    Term
                   </div>
                   <div>
-                    {loan.termMonths ? `${loan.termMonths} חודשים` : "—"}
+                    {loan.termMonths ? `${loan.termMonths} months` : "—"}
                   </div>
                 </div>
 
                 <div>
                   <div className="text-sm font-medium text-muted-foreground mb-1">
-                    תאריך התחלה
+                    Start Date
                   </div>
                   <div>
                     {loan.startDate
@@ -208,7 +208,7 @@ export default async function LoanDetailPage({ params }: PageProps) {
 
                 <div>
                   <div className="text-sm font-medium text-muted-foreground mb-1">
-                    נוצר
+                    Created
                   </div>
                   <div>{loan.createdAt.toLocaleDateString("he-IL")}</div>
                 </div>
