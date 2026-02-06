@@ -15,8 +15,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mortgage Dashboard",
-  description: "Track your mortgage requests",
+  title: "Mortgage Compare",
+  description: "Compare bank offers, find the best mortgage rate",
+  icons: {
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-48.png", sizes: "48x48", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/manifest.json",
+  openGraph: {
+    title: "Mortgage Compare",
+    description: "Compare bank offers, find the best mortgage rate",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mortgage Compare",
+    description: "Compare bank offers, find the best mortgage rate",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
