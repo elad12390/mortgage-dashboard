@@ -21,9 +21,9 @@ import { MortgageSwitcher } from "@/components/mortgage-switcher";
 const navItems = [
   { title: "Dashboard", href: "/", icon: Home },
   { title: "Bank Offers", href: "/offers", icon: Building2 },
-  { title: "הלוואות", href: "/loans", icon: Landmark },
-  { title: "הוצאות", href: "/costs", icon: Receipt },
-  { title: "ציר זמן", href: "/timeline", icon: CalendarDays },
+  { title: "Loans", href: "/loans", icon: Landmark },
+  { title: "Costs", href: "/costs", icon: Receipt },
+  { title: "Timeline", href: "/timeline", icon: CalendarDays },
   { title: "Contacts", href: "/contacts", icon: Users },
   { title: "Members", href: "/members", icon: UserPlus },
 ];
