@@ -1,10 +1,10 @@
 "use server";
 
 import { db } from "@/db";
-import { mortgages, mortgageMembers } from "@/db/schema";
-import { eq, and, desc } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { mortgages, mortgageMembers, loans, extraCosts, paymentMilestones } from "@/db/schema";
 import { requireUserId, verifyMortgageAccess } from "@/lib/auth";
+import { eq, and, isNotNull, desc } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { getActiveMortgageId } from "@/lib/active-mortgage";
 
 export async function getMortgage(mortgageId?: string) {
@@ -156,6 +156,49 @@ export async function getDashboardData() {
         ) / totalTrackAmount
       : 0;
 
+  const [allLoans, allCosts, allMilestones] = await Promise.all([
+    db.query.loans.findMany({ where: eq(loans.mortgageId, mortgage.id) }),
+    db.query.extraCosts.findMany({ where: eq(extraCosts.mortgageId, mortgage.id) }),
+    db.query.paymentMilestones.findMany({ where: eq(paymentMilestones.mortgageId, mortgage.id) }),
+  ]);
+
+  const totalLoansAmount = allLoans.reduce((sum, loan) => sum + parseFloat(loan.amount), 0);
+  const totalMonthlyRepayments = allLoans.reduce(
+    (sum, loan) => sum + parseFloat(loan.monthlyRepayment || "0"),
+    0
+  );
+  const activeLoansCount = allLoans.filter(
+    (loan) => loan.status === "received" || loan.status === "repaying"
+  ).length;
+
+  const totalCostsAmount = allCosts.reduce((sum, cost) => sum + parseFloat(cost.amount), 0);
+  const totalCostsPaid = allCosts.reduce((sum, cost) => sum + parseFloat(cost.paidAmount), 0);
+  const costsRemaining = totalCostsAmount - totalCostsPaid;
+
+  const today = new Date();
+  const overdueCostsCount = allCosts.filter((cost) => {
+    const isUnpaid = cost.status === "unpaid" || cost.status === "partially_paid";
+    return isUnpaid && cost.dueDate && new Date(cost.dueDate) < today;
+  }).length;
+
+  const upcomingPayments = [
+    ...allMilestones
+      .filter((m) => m.isPaid === 0 && new Date(m.date) >= today)
+      .map((m) => ({ date: new Date(m.date), amount: parseFloat(m.amount), name: m.name })),
+    ...allCosts
+      .filter((c) => {
+        const isUnpaid = c.status === "unpaid" || c.status === "partially_paid";
+        return isUnpaid && c.dueDate && new Date(c.dueDate) >= today;
+      })
+      .map((c) => ({
+        date: new Date(c.dueDate!),
+        amount: parseFloat(c.amount) - parseFloat(c.paidAmount),
+        name: c.description || c.category,
+      })),
+  ].sort((a, b) => a.date.getTime() - b.date.getTime());
+
+  const nextPaymentDue = upcomingPayments.length > 0 ? upcomingPayments[0] : null;
+
   return {
     mortgage,
     stats: {
@@ -163,6 +206,14 @@ export async function getDashboardData() {
       activeOffers,
       totalTrackAmount,
       weightedInterestRate,
+      totalLoansAmount,
+      totalMonthlyRepayments,
+      activeLoansCount,
+      totalCostsAmount,
+      totalCostsPaid,
+      costsRemaining,
+      overdueCostsCount,
+      nextPaymentDue,
     },
   };
 }

@@ -5,7 +5,9 @@ import { MortgageSetup } from "@/components/mortgage-setup";
 import { ComparisonGrid } from "@/components/comparison-grid";
 import { EditMortgageToggle } from "@/components/edit-mortgage-toggle";
 import { ActivityTimeline } from "@/components/activity-timeline";
-import { Building2, TrendingUp, DollarSign, Activity } from "lucide-react";
+import { Building2, TrendingUp, DollarSign, Activity, Landmark, Receipt, CalendarDays, AlertCircle } from "lucide-react";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 
 export default async function DashboardPage() {
   const { mortgage, stats } = await getDashboardData();
@@ -151,6 +153,90 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
         ))}
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">מימון והוצאות</h3>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Link href="/loans">
+            <Card className="cursor-pointer hover:bg-accent transition-colors">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  הלוואות פעילות
+                </CardTitle>
+                <Landmark className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stats!.activeLoansCount}</div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  ₪{stats!.totalMonthlyRepayments.toLocaleString()} לחודש
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/loans">
+            <Card className="cursor-pointer hover:bg-accent transition-colors">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  סה"כ הלוואות
+                </CardTitle>
+                <DollarSign className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  ₪{stats!.totalLoansAmount.toLocaleString()}
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/costs">
+            <Card className="cursor-pointer hover:bg-accent transition-colors">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  הוצאות נותרות
+                </CardTitle>
+                <Receipt className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  ₪{stats!.costsRemaining.toLocaleString()}
+                </div>
+                {stats!.overdueCostsCount > 0 && (
+                  <Badge variant="destructive" className="mt-1">
+                    {stats!.overdueCostsCount} באיחור
+                  </Badge>
+                )}
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/timeline">
+            <Card className="cursor-pointer hover:bg-accent transition-colors">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  תשלום הבא
+                </CardTitle>
+                <CalendarDays className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                {stats!.nextPaymentDue ? (
+                  <>
+                    <div className="text-2xl font-bold">
+                      ₪{stats!.nextPaymentDue.amount.toLocaleString()}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {stats!.nextPaymentDue.date.toLocaleDateString("he-IL")}
+                    </p>
+                  </>
+                ) : (
+                  <div className="text-sm text-muted-foreground">אין תשלומים קרובים</div>
+                )}
+              </CardContent>
+            </Card>
+          </Link>
+        </div>
       </div>
 
       <ComparisonGrid offers={mortgage.bankOffers} />
