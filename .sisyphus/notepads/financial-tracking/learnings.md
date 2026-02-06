@@ -108,3 +108,14 @@ Adding financial tracking to mortgage dashboard: loans (for 25% down payment), e
 
 **Files changed:**
 - src/app/actions/milestones.ts (new)
+
+## [2026-02-06 19:05] Task 3: Loans Server Actions - COMPLETE
+
+**What was done:**
+- Added `src/app/actions/loans.ts` with 8 server actions for loan CRUD + activity events.
+- Implemented access control using `requireUserId()` + `verifyMortgageAccess()` for all actions.
+- Logged status change activity events with metadata `{ oldStatus, newStatus }`.
+
+**Verification:**
+- ✅ lsp_diagnostics clean on src/app/actions/loans.ts
+- ✅ npm run build passes (warnings only)
