@@ -44,7 +44,7 @@ export function MortgageSwitcher({
         <SelectContent>
           {mortgages.map((mortgage) => {
             const value = mortgage.propertyValue
-              ? new Intl.NumberFormat("he-IL", {
+              ? new Intl.NumberFormat("en-US", {
                   style: "currency",
                   currency: "ILS",
                   minimumFractionDigits: 0,

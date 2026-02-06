@@ -37,9 +37,9 @@ export default async function CostsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Extra Costs</h2>
+        <h2 className="text-2xl font-bold tracking-tight">Extra Costs</h2>
         <CostDialog mortgageId={mortgage.id} />
       </div>
 
@@ -142,7 +142,7 @@ export default async function CostsPage() {
                       <TableCell>₪{remaining.toFixed(2)}</TableCell>
                       <TableCell className="text-muted-foreground">
                         {cost.dueDate
-                          ? new Date(cost.dueDate).toLocaleDateString("he-IL")
+                          ? new Date(cost.dueDate).toLocaleDateString("en-US")
                           : "-"}
                       </TableCell>
                       <TableCell>

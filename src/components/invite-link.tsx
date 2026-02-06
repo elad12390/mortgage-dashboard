@@ -58,7 +58,7 @@ export function InviteLink({
   }
 
   const inviteUrl = `${window.location.origin}/invite/${invite.token}`;
-  const expiresAt = new Intl.DateTimeFormat("he-IL", {
+  const expiresAt = new Intl.DateTimeFormat("en-US", {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(invite.expiresAt);

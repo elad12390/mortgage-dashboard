@@ -201,7 +201,7 @@ export default async function LoanDetailPage({ params }: PageProps) {
                   </div>
                   <div>
                     {loan.startDate
-                      ? new Date(loan.startDate).toLocaleDateString("he-IL")
+                      ? new Date(loan.startDate).toLocaleDateString("en-US")
                       : "—"}
                   </div>
                 </div>
@@ -210,7 +210,7 @@ export default async function LoanDetailPage({ params }: PageProps) {
                   <div className="text-sm font-medium text-muted-foreground mb-1">
                     Created
                   </div>
-                  <div>{loan.createdAt.toLocaleDateString("he-IL")}</div>
+                  <div>{loan.createdAt.toLocaleDateString("en-US")}</div>
                 </div>
               </div>
 

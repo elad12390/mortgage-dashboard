@@ -82,7 +82,7 @@ export default async function OfferDetailPage({ params }: PageProps) {
               {STATUS_LABELS[offer.status]}
             </Badge>
             <span className="text-sm text-muted-foreground">
-              Created {offer.createdAt.toLocaleDateString("he-IL")}
+              Created {offer.createdAt.toLocaleDateString("en-US")}
             </span>
           </div>
         </div>

@@ -82,7 +82,7 @@ export default async function OffersPage() {
                     <TableCell>{offer.tracks.length}</TableCell>
                     <TableCell>{offer.contacts.length}</TableCell>
                     <TableCell className="text-muted-foreground">
-                      {offer.createdAt.toLocaleDateString("he-IL")}
+                      {offer.createdAt.toLocaleDateString("en-US")}
                     </TableCell>
                   </TableRow>
                 ))}

@@ -84,7 +84,7 @@ export function MembersList({
               {member.joinedAt && (
                 <p className="text-xs text-muted-foreground">
                   Joined{" "}
-                  {new Intl.DateTimeFormat("he-IL", {
+                  {new Intl.DateTimeFormat("en-US", {
                     dateStyle: "medium",
                   }).format(member.joinedAt)}
                 </p>

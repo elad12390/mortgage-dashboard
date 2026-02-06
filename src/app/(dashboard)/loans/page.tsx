@@ -37,9 +37,9 @@ export default async function LoansPage() {
   ).length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Loans</h2>
+        <h2 className="text-2xl font-bold tracking-tight">Loans</h2>
         <LoanDialog mortgageId={mortgage.id} />
       </div>
 
@@ -143,7 +143,7 @@ export default async function LoansPage() {
                     </TableCell>
                     <TableCell className="text-muted-foreground">
                       {loan.startDate
-                        ? new Date(loan.startDate).toLocaleDateString("he-IL")
+                        ? new Date(loan.startDate).toLocaleDateString("en-US")
                         : "-"}
                     </TableCell>
                   </TableRow>

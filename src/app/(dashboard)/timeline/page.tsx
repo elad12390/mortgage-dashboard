@@ -42,9 +42,9 @@ export default async function TimelinePage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Timeline</h2>
+        <h2 className="text-2xl font-bold tracking-tight">Timeline</h2>
         <MilestoneDialog mortgageId={mortgage.id} />
       </div>
 
@@ -60,7 +60,7 @@ export default async function TimelinePage() {
                   ₪{parseFloat(String(nextPayment.amount)).toLocaleString()}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {new Date(nextPayment.date).toLocaleDateString("he-IL")} -{" "}
+                  {new Date(nextPayment.date).toLocaleDateString("en-US")} -{" "}
                   {nextPayment.name}
                 </p>
               </div>
@@ -123,7 +123,7 @@ export default async function TimelinePage() {
                       ₪{parseFloat(milestone.amount).toLocaleString()}
                     </TableCell>
                     <TableCell className="text-muted-foreground">
-                      {new Date(milestone.date).toLocaleDateString("he-IL")}
+                      {new Date(milestone.date).toLocaleDateString("en-US")}
                     </TableCell>
                     <TableCell>
                       <Badge
@@ -197,7 +197,7 @@ export default async function TimelinePage() {
                       <div>
                         <div className="font-medium">{entry.name}</div>
                         <div className="text-sm text-muted-foreground">
-                          {entryDate.toLocaleDateString("he-IL")}
+                          {entryDate.toLocaleDateString("en-US")}
                         </div>
                       </div>
                     </div>

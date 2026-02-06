@@ -46,14 +46,14 @@ export default async function InviteAcceptPage({
     : "Unknown User";
 
   const propertyValue = invite.mortgage.propertyValue
-    ? new Intl.NumberFormat("he-IL", {
+    ? new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "ILS",
         minimumFractionDigits: 0,
       }).format(Number(invite.mortgage.propertyValue))
     : "Not set";
 
-  const expiresAt = new Intl.DateTimeFormat("he-IL", {
+  const expiresAt = new Intl.DateTimeFormat("en-US", {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(invite.expiresAt);
