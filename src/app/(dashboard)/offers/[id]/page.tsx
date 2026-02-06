@@ -36,13 +36,14 @@ interface PageProps {
 
 export default async function OfferDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const offer = await getOfferById(id);
+  const [offer, events] = await Promise.all([
+    getOfferById(id),
+    getActivityEvents({ offerId: id }),
+  ]);
 
   if (!offer) {
     notFound();
   }
-
-  const events = await getActivityEvents({ offerId: id });
 
   const totalTrackAmount = offer.tracks.reduce(
     (sum: number, t: { amount: string }) => sum + parseFloat(t.amount),
