@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { mortgages } from "@/db/schema";
 import { eq, and, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { requireUserId } from "@/lib/auth";
+import { requireUserId, verifyMortgageAccess } from "@/lib/auth";
 
 export async function getMortgage() {
   const userId = await requireUserId();
@@ -55,6 +55,8 @@ export async function updateMortgage(id: string, formData: FormData) {
   const mortgageTermYears = formData.get("mortgageTermYears") as string;
   const notes = formData.get("notes") as string;
 
+  await verifyMortgageAccess(id, userId);
+
   await db
     .update(mortgages)
     .set({
@@ -64,7 +66,7 @@ export async function updateMortgage(id: string, formData: FormData) {
       notes: notes || null,
       updatedAt: new Date(),
     })
-    .where(and(eq(mortgages.id, id), eq(mortgages.userId, userId)));
+    .where(eq(mortgages.id, id));
 
   revalidatePath("/");
 }

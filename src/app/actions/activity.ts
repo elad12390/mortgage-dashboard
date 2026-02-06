@@ -4,29 +4,7 @@ import { db } from "@/db";
 import { activityEvents, mortgages, bankOffers } from "@/db/schema";
 import { eq, and, desc, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { requireUserId } from "@/lib/auth";
-
-async function verifyMortgageOwnership(mortgageId: string, userId: string) {
-  const mortgage = await db.query.mortgages.findFirst({
-    where: and(eq(mortgages.id, mortgageId), eq(mortgages.userId, userId)),
-    columns: { id: true },
-  });
-  if (!mortgage) {
-    throw new Error("Unauthorized");
-  }
-  return mortgage;
-}
-
-async function verifyOfferOwnership(offerId: string, userId: string) {
-  const offer = await db.query.bankOffers.findFirst({
-    where: eq(bankOffers.id, offerId),
-    with: { mortgage: { columns: { userId: true } } },
-  });
-  if (!offer || offer.mortgage.userId !== userId) {
-    throw new Error("Unauthorized");
-  }
-  return offer;
-}
+import { requireUserId, verifyMortgageAccess, verifyOfferAccess } from "@/lib/auth";
 
 export async function getActivityEvents(params: {
   mortgageId?: string;
@@ -35,7 +13,7 @@ export async function getActivityEvents(params: {
   const userId = await requireUserId();
 
   if (params.offerId) {
-    await verifyOfferOwnership(params.offerId, userId);
+    await verifyOfferAccess(params.offerId, userId);
     return db.query.activityEvents.findMany({
       where: eq(activityEvents.offerId, params.offerId),
       orderBy: [desc(activityEvents.createdAt)],
@@ -43,7 +21,7 @@ export async function getActivityEvents(params: {
   }
 
   if (params.mortgageId) {
-    await verifyMortgageOwnership(params.mortgageId, userId);
+    await verifyMortgageAccess(params.mortgageId, userId);
     return db.query.activityEvents.findMany({
       where: and(
         eq(activityEvents.mortgageId, params.mortgageId),
@@ -65,7 +43,13 @@ export async function addMessage(
   const createdAt = customDate ? new Date(customDate) : new Date();
 
   if (params.offerId) {
-    const offer = await verifyOfferOwnership(params.offerId, userId);
+    await verifyOfferAccess(params.offerId, userId);
+    const offer = await db.query.bankOffers.findFirst({
+      where: eq(bankOffers.id, params.offerId),
+    });
+    if (!offer) {
+      throw new Error("Offer not found");
+    }
     await db.insert(activityEvents).values({
       mortgageId: offer.mortgageId,
       offerId: params.offerId,
@@ -75,7 +59,7 @@ export async function addMessage(
     });
     revalidatePath(`/offers/${params.offerId}`);
   } else if (params.mortgageId) {
-    await verifyMortgageOwnership(params.mortgageId, userId);
+    await verifyMortgageAccess(params.mortgageId, userId);
     await db.insert(activityEvents).values({
       mortgageId: params.mortgageId,
       eventType: "message",
@@ -102,9 +86,9 @@ export async function deleteMessage(eventId: string) {
   }
 
   if (event.offerId) {
-    await verifyOfferOwnership(event.offerId, userId);
+    await verifyOfferAccess(event.offerId, userId);
   } else if (event.mortgageId) {
-    await verifyMortgageOwnership(event.mortgageId, userId);
+    await verifyMortgageAccess(event.mortgageId, userId);
   }
 
   await db.delete(activityEvents).where(eq(activityEvents.id, eventId));

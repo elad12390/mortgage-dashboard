@@ -4,44 +4,32 @@ import { db } from "@/db";
 import { contacts, mortgages, bankOffers } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { requireUserId } from "@/lib/auth";
-
-async function verifyMortgageOwnership(mortgageId: string, userId: string) {
-  const mortgage = await db.query.mortgages.findFirst({
-    where: and(eq(mortgages.id, mortgageId), eq(mortgages.userId, userId)),
-    columns: { id: true },
-  });
-  if (!mortgage) {
-    throw new Error("Unauthorized");
-  }
-}
-
-async function verifyOfferOwnership(offerId: string, userId: string) {
-  const offer = await db.query.bankOffers.findFirst({
-    where: eq(bankOffers.id, offerId),
-    with: { mortgage: { columns: { userId: true } } },
-  });
-  if (!offer || offer.mortgage.userId !== userId) {
-    throw new Error("Unauthorized");
-  }
-}
+import { requireUserId, verifyMortgageAccess, verifyOfferAccess } from "@/lib/auth";
 
 async function verifyContactOwnership(contactId: string, userId: string) {
   const contact = await db.query.contacts.findFirst({
     where: eq(contacts.id, contactId),
     with: {
-      mortgage: { columns: { userId: true } },
-      offer: { with: { mortgage: { columns: { userId: true } } } },
+      mortgage: { columns: { id: true } },
+      offer: { with: { mortgage: { columns: { id: true } } } },
     },
   });
   if (!contact) {
     throw new Error("Unauthorized");
   }
-  if (contact.mortgage && contact.mortgage.userId !== userId) {
-    throw new Error("Unauthorized");
+  if (contact.mortgage) {
+    try {
+      await verifyMortgageAccess(contact.mortgage.id, userId);
+    } catch {
+      throw new Error("Unauthorized");
+    }
   }
-  if (contact.offer && contact.offer.mortgage.userId !== userId) {
-    throw new Error("Unauthorized");
+  if (contact.offer) {
+    try {
+      await verifyMortgageAccess(contact.offer.mortgage.id, userId);
+    } catch {
+      throw new Error("Unauthorized");
+    }
   }
 }
 
@@ -57,10 +45,10 @@ export async function createContact(
   const userId = await requireUserId();
 
   if (params.mortgageId) {
-    await verifyMortgageOwnership(params.mortgageId, userId);
+    await verifyMortgageAccess(params.mortgageId, userId);
   }
   if (params.offerId) {
-    await verifyOfferOwnership(params.offerId, userId);
+    await verifyOfferAccess(params.offerId, userId);
   }
 
   const name = formData.get("name") as string;
@@ -124,7 +112,7 @@ export async function deleteContact(contactId: string) {
 
 export async function getGlobalContacts(mortgageId: string) {
   const userId = await requireUserId();
-  await verifyMortgageOwnership(mortgageId, userId);
+  await verifyMortgageAccess(mortgageId, userId);
 
   const result = await db.query.contacts.findMany({
     where: eq(contacts.mortgageId, mortgageId),

@@ -5,34 +5,12 @@ import { bankOffers, mortgages, activityEvents } from "@/db/schema";
 import { eq, and, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { requireUserId } from "@/lib/auth";
+import { requireUserId, verifyMortgageAccess, verifyOfferAccess } from "@/lib/auth";
 import { STATUS_LABELS } from "@/lib/constants";
-
-async function verifyMortgageOwnership(mortgageId: string, userId: string) {
-  const mortgage = await db.query.mortgages.findFirst({
-    where: and(eq(mortgages.id, mortgageId), eq(mortgages.userId, userId)),
-    columns: { id: true },
-  });
-  if (!mortgage) {
-    throw new Error("Unauthorized");
-  }
-  return mortgage;
-}
-
-async function verifyOfferOwnership(offerId: string, userId: string) {
-  const offer = await db.query.bankOffers.findFirst({
-    where: eq(bankOffers.id, offerId),
-    with: { mortgage: { columns: { userId: true } } },
-  });
-  if (!offer || offer.mortgage.userId !== userId) {
-    throw new Error("Unauthorized");
-  }
-  return offer;
-}
 
 export async function getOffers(mortgageId: string) {
   const userId = await requireUserId();
-  await verifyMortgageOwnership(mortgageId, userId);
+  await verifyMortgageAccess(mortgageId, userId);
 
   const offers = await db.query.bankOffers.findMany({
     where: eq(bankOffers.mortgageId, mortgageId),
@@ -57,7 +35,13 @@ export async function getOfferById(id: string) {
     },
   });
 
-  if (!offer || offer.mortgage.userId !== userId) {
+  if (!offer) {
+    return null;
+  }
+
+  try {
+    await verifyMortgageAccess(offer.mortgageId, userId);
+  } catch {
     return null;
   }
 
@@ -66,7 +50,7 @@ export async function getOfferById(id: string) {
 
 export async function createOffer(mortgageId: string, formData: FormData) {
   const userId = await requireUserId();
-  await verifyMortgageOwnership(mortgageId, userId);
+  await verifyMortgageAccess(mortgageId, userId);
 
   const bankName = formData.get("bankName") as string;
   const status = formData.get("status") as string;
@@ -97,7 +81,15 @@ export async function createOffer(mortgageId: string, formData: FormData) {
 
 export async function updateOffer(id: string, formData: FormData) {
   const userId = await requireUserId();
-  const currentOffer = await verifyOfferOwnership(id, userId);
+  await verifyOfferAccess(id, userId);
+
+  const currentOffer = await db.query.bankOffers.findFirst({
+    where: eq(bankOffers.id, id),
+  });
+
+  if (!currentOffer) {
+    throw new Error("Offer not found");
+  }
 
   const bankName = formData.get("bankName") as string;
   const status = formData.get("status") as string;
@@ -131,7 +123,7 @@ export async function updateOffer(id: string, formData: FormData) {
 
 export async function deleteOffer(id: string) {
   const userId = await requireUserId();
-  await verifyOfferOwnership(id, userId);
+  await verifyOfferAccess(id, userId);
 
   await db.delete(bankOffers).where(eq(bankOffers.id, id));
   revalidatePath("/");

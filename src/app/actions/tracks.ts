@@ -4,22 +4,11 @@ import { db } from "@/db";
 import { mortgageTracks, bankOffers } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { requireUserId } from "@/lib/auth";
-
-async function verifyOfferOwnership(offerId: string, userId: string) {
-  const offer = await db.query.bankOffers.findFirst({
-    where: eq(bankOffers.id, offerId),
-    with: { mortgage: { columns: { userId: true } } },
-  });
-  if (!offer || offer.mortgage.userId !== userId) {
-    throw new Error("Unauthorized");
-  }
-  return offer;
-}
+import { requireUserId, verifyOfferAccess } from "@/lib/auth";
 
 export async function createTrack(offerId: string, formData: FormData) {
   const userId = await requireUserId();
-  await verifyOfferOwnership(offerId, userId);
+  await verifyOfferAccess(offerId, userId);
 
   const trackType = formData.get("trackType") as string;
   const interestRate = formData.get("interestRate") as string;
@@ -47,7 +36,7 @@ export async function updateTrack(
   formData: FormData
 ) {
   const userId = await requireUserId();
-  await verifyOfferOwnership(offerId, userId);
+  await verifyOfferAccess(offerId, userId);
 
   const trackType = formData.get("trackType") as string;
   const interestRate = formData.get("interestRate") as string;
@@ -73,7 +62,7 @@ export async function updateTrack(
 
 export async function deleteTrack(trackId: string, offerId: string) {
   const userId = await requireUserId();
-  await verifyOfferOwnership(offerId, userId);
+  await verifyOfferAccess(offerId, userId);
 
   await db.delete(mortgageTracks).where(eq(mortgageTracks.id, trackId));
   revalidatePath(`/offers/${offerId}`);
