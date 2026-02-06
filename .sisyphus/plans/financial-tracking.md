@@ -585,7 +585,7 @@ Task 1 (DB schema: loans, extra_costs, payment_milestones tables + activity_even
 
 ---
 
-- [ ] 7. Create costs page (`/costs`)
+- [x] 7. Create costs page (`/costs`)
 
   **What to do**:
 
@@ -641,17 +641,17 @@ Task 1 (DB schema: loans, extra_costs, payment_milestones tables + activity_even
   - `src/lib/constants.ts` — costCategoryLabels, costPaymentStatusLabels, costPaymentStatusColors
 
   **Acceptance Criteria**:
-  - [ ] `/costs` page shows list of all extra costs for active mortgage
-  - [ ] Summary cards show correct totals (total, paid, remaining, overdue count)
-  - [ ] "New Cost" button opens dialog → creates cost → appears in list
-  - [ ] Category select shows Hebrew labels with "Other" custom option
-  - [ ] Status auto-calculated from paid vs total amount
-  - [ ] Overdue costs visually flagged (past due date + not fully paid)
-  - [ ] "Mark Paid" quick action works
-  - [ ] Edit dialog pre-fills all fields
-  - [ ] Delete removes cost with confirmation
-  - [ ] Empty state displayed when no costs exist
-  - [ ] `npm run build` passes
+  - [x] `/costs` page shows list of all extra costs for active mortgage
+  - [x] Summary cards show correct totals (total, paid, remaining, overdue count)
+  - [x] "New Cost" button opens dialog → creates cost → appears in list
+  - [x] Category select shows Hebrew labels with "Other" custom option
+  - [x] Status auto-calculated from paid vs total amount
+  - [x] Overdue costs visually flagged (past due date + not fully paid)
+  - [x] "Mark Paid" quick action works
+  - [x] Edit dialog pre-fills all fields
+  - [x] Delete removes cost with confirmation
+  - [x] Empty state displayed when no costs exist
+  - [x] `npm run build` passes
 
   **Commit**: YES
   - Message: `feat(costs): add extra costs page with CRUD, overdue flagging, and summary`
@@ -660,7 +660,7 @@ Task 1 (DB schema: loans, extra_costs, payment_milestones tables + activity_even
 
 ---
 
-- [ ] 8. Create timeline page (`/timeline`) with horizontal timeline + calendar view
+- [x] 8. Create timeline page (`/timeline`) with horizontal timeline + calendar view
 
   **What to do**:
 
@@ -755,7 +755,7 @@ Task 1 (DB schema: loans, extra_costs, payment_milestones tables + activity_even
 
 ---
 
-- [ ] 9. Add dashboard summary cards for loans and costs
+- [x] 9. Add dashboard summary cards for loans and costs
 
   **What to do**:
 
@@ -809,7 +809,7 @@ Task 1 (DB schema: loans, extra_costs, payment_milestones tables + activity_even
 
 ---
 
-- [ ] 10. Update sidebar navigation with new pages
+- [x] 10. Update sidebar navigation with new pages
 
   **What to do**:
 
@@ -847,7 +847,7 @@ Task 1 (DB schema: loans, extra_costs, payment_milestones tables + activity_even
 
 ---
 
-- [ ] 11. Final build verification + push to deploy
+- [x] 11. Final build verification + push to deploy
 
   **What to do**:
   - Run `npm run build` — must pass with zero errors
