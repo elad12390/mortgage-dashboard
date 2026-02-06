@@ -1,15 +1,55 @@
 "use server";
 
 import { db } from "@/db";
-import { mortgages } from "@/db/schema";
+import { mortgages, mortgageMembers } from "@/db/schema";
 import { eq, and, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { requireUserId, verifyMortgageAccess } from "@/lib/auth";
+import { getActiveMortgageId } from "@/lib/active-mortgage";
 
-export async function getMortgage() {
+export async function getMortgage(mortgageId?: string) {
   const userId = await requireUserId();
 
-  const mortgage = await db.query.mortgages.findFirst({
+  if (mortgageId) {
+    await verifyMortgageAccess(mortgageId, userId);
+    const mortgage = await db.query.mortgages.findFirst({
+      where: eq(mortgages.id, mortgageId),
+      with: {
+        bankOffers: {
+          with: {
+            tracks: true,
+            contacts: true,
+          },
+        },
+        contacts: true,
+      },
+    });
+    return mortgage ?? null;
+  }
+
+  const activeMortgageId = await getActiveMortgageId();
+  if (activeMortgageId) {
+    try {
+      await verifyMortgageAccess(activeMortgageId, userId);
+      const mortgage = await db.query.mortgages.findFirst({
+        where: eq(mortgages.id, activeMortgageId),
+        with: {
+          bankOffers: {
+            with: {
+              tracks: true,
+              contacts: true,
+            },
+          },
+          contacts: true,
+        },
+      });
+      if (mortgage) return mortgage;
+    } catch {
+      // Cookie points to inaccessible mortgage, fall through
+    }
+  }
+
+  const ownedMortgage = await db.query.mortgages.findFirst({
     where: eq(mortgages.userId, userId),
     with: {
       bankOffers: {
@@ -23,7 +63,25 @@ export async function getMortgage() {
     orderBy: [desc(mortgages.createdAt)],
   });
 
-  return mortgage ?? null;
+  if (ownedMortgage) return ownedMortgage;
+
+  const accessibleMortgages = await getUserMortgages(userId);
+  if (accessibleMortgages.length === 0) return null;
+
+  const firstAccessible = await db.query.mortgages.findFirst({
+    where: eq(mortgages.id, accessibleMortgages[0].id),
+    with: {
+      bankOffers: {
+        with: {
+          tracks: true,
+          contacts: true,
+        },
+      },
+      contacts: true,
+    },
+  });
+
+  return firstAccessible ?? null;
 }
 
 export async function createMortgage(formData: FormData) {
@@ -107,4 +165,38 @@ export async function getDashboardData() {
       weightedInterestRate,
     },
   };
+}
+
+export async function getUserMortgages(userId: string) {
+  const ownedMortgages = await db.query.mortgages.findMany({
+    where: eq(mortgages.userId, userId),
+    with: {
+      bankOffers: { columns: { id: true } },
+    },
+  });
+
+  const memberships = await db.query.mortgageMembers.findMany({
+    where: eq(mortgageMembers.userId, userId),
+    with: {
+      mortgage: {
+        with: {
+          bankOffers: { columns: { id: true } },
+        },
+      },
+    },
+  });
+
+  const owned = ownedMortgages.map((m) => ({
+    ...m,
+    role: "owner" as const,
+    offersCount: m.bankOffers.length,
+  }));
+
+  const member = memberships.map((membership) => ({
+    ...membership.mortgage,
+    role: "member" as const,
+    offersCount: membership.mortgage.bankOffers.length,
+  }));
+
+  return [...owned, ...member];
 }
