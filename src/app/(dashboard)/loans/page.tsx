@@ -12,9 +12,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getMortgage } from "@/app/actions/mortgage";
 import { getLoans } from "@/app/actions/loans";
 import { loanStatusLabels, loanStatusColors } from "@/lib/constants";
-import { Plus } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { LoanDialog } from "@/components/loan-dialog";
 import { redirect } from "next/navigation";
 
 export default async function LoansPage() {
@@ -40,12 +40,7 @@ export default async function LoansPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">הלוואות</h2>
-        <Button asChild>
-          <Link href="/loans/new">
-            <Plus className="mr-2 h-4 w-4" />
-            הלוואה חדשה
-          </Link>
-        </Button>
+        <LoanDialog mortgageId={mortgage.id} />
       </div>
 
       {/* Summary Cards */}
