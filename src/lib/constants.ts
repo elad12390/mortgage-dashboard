@@ -83,3 +83,51 @@ export const REQUEST_STATUSES = [
   "signed",
   "cancelled",
 ] as const;
+
+export const loanStatusLabels: Record<string, string> = {
+  pending: "ממתין",
+  approved: "אושר",
+  received: "התקבל",
+  repaying: "בהחזר",
+  completed: "הושלם",
+};
+
+export const loanStatusColors: Record<string, string> = {
+  pending: "gray",
+  approved: "blue",
+  received: "green",
+  repaying: "yellow",
+  completed: "purple",
+};
+
+export const costCategoryLabels: Record<string, string> = {
+  lawyer: "עורך דין",
+  purchase_tax: "מס רכישה",
+  renovation: "שיפוץ",
+  broker: "יועץ משכנתא",
+  appraisal: "שמאות",
+  moving: "הובלה",
+  insurance: "ביטוח",
+  other: "אחר",
+};
+
+export const costPaymentStatusLabels: Record<string, string> = {
+  unpaid: "לא שולם",
+  partially_paid: "שולם חלקית",
+  fully_paid: "שולם",
+};
+
+export const costPaymentStatusColors: Record<string, string> = {
+  unpaid: "red",
+  partially_paid: "yellow",
+  fully_paid: "green",
+};
+
+export const milestoneTypePresets: Record<string, string> = {
+  contract_signing: "חתימת חוזה",
+  payment_30_days: "תשלום 30 יום",
+  payment_60_days: "תשלום 60 יום",
+  key_handover: "מסירת מפתח",
+  mortgage_start: "תחילת משכנתא",
+  custom: "מותאם אישית",
+};

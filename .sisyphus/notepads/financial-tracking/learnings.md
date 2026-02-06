@@ -72,3 +72,25 @@ Adding financial tracking to mortgage dashboard: loans (for 25% down payment), e
 - drizzle/meta/_journal.json (updated)
 
 **Ready for:** Task 2 (constants)
+
+## Task 2: Constants for Financial Tracking - COMPLETED ✓
+
+**What was done:**
+- Added 6 new constant objects to `src/lib/constants.ts`:
+  1. `loanStatusLabels`: Record<string, string> - 5 Hebrew labels (pending, approved, received, repaying, completed)
+  2. `loanStatusColors`: Record<string, string> - 5 color values (gray, blue, green, yellow, purple)
+  3. `costCategoryLabels`: Record<string, string> - 8 Hebrew labels (lawyer, purchase_tax, renovation, broker, appraisal, moving, insurance, other)
+  4. `costPaymentStatusLabels`: Record<string, string> - 3 Hebrew labels (unpaid, partially_paid, fully_paid)
+  5. `costPaymentStatusColors`: Record<string, string> - 3 color values (red, yellow, green)
+  6. `milestoneTypePresets`: Record<string, string> - 6 Hebrew labels (contract_signing, payment_30_days, payment_60_days, key_handover, mortgage_start, custom)
+
+**Verification:**
+- ✅ All constants follow existing pattern (TRACK_TYPE_LABELS, STATUS_LABELS, STATUS_COLORS)
+- ✅ All Hebrew labels use Israeli financial terminology
+- ✅ npm run build passes (0 errors, compiled successfully in 1208.6ms)
+- ✅ TypeScript compilation successful
+
+**Files changed:**
+- src/lib/constants.ts (+57 lines, 6 new exports)
+
+**Ready for:** Task 3 (server actions for loans)

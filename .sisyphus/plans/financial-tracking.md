@@ -232,7 +232,7 @@ Task 1 (DB schema: loans, extra_costs, payment_milestones tables + activity_even
 
 ---
 
-- [ ] 2. Add constants for loan statuses, cost categories, cost payment statuses, and milestone types
+- [x] 2. Add constants for loan statuses, cost categories, cost payment statuses, and milestone types
 
   **What to do**:
   - Add to `src/lib/constants.ts`:
