@@ -130,3 +130,158 @@ Adding financial tracking to mortgage dashboard: loans (for 25% down payment), e
 **Verification:**
 - ✅ lsp_diagnostics clean on src/app/actions/costs.ts
 - ✅ npm run build passes (warnings only)
+
+## [2026-02-06 21:30] Task 6: Loans Pages - PARTIAL COMPLETE
+
+**What was done:**
+- Created `src/app/(dashboard)/loans/page.tsx` - Loans list page with:
+  - 3 summary cards: Total Loans Amount, Total Monthly Repayments, Active Loans Count
+  - Table with columns: Lender Name, Amount, Interest Rate, Monthly Payment, Term, Status (badge), Start Date
+  - Each row links to `/loans/[id]`
+  - Empty state for no loans
+  - Hebrew labels throughout
+- Created `src/app/(dashboard)/loans/loading.tsx` - Loading skeleton matching list page structure
+- Created `src/app/(dashboard)/loans/[id]/page.tsx` - Loan detail page with:
+  - Header with lender name, status badge, delete button
+  - 4 summary cards: Amount, Interest Rate, Monthly Payment, Term
+  - Tabs: Activity (placeholder), Details (full loan info)
+  - Hebrew labels throughout
+
+**Verification:**
+- ✅ npm run build passes (0 errors, compiled successfully)
+- ✅ All routes appear in build output: /loans, /loans/[id]
+- ✅ No LSP errors
+
+**Files changed:**
+- src/app/(dashboard)/loans/page.tsx (new, 175 lines)
+- src/app/(dashboard)/loans/loading.tsx (new, 49 lines)
+- src/app/(dashboard)/loans/[id]/page.tsx (new, 212 lines)
+
+**Still TODO for Task 6:**
+- Loan dialog component (src/components/loan-dialog.tsx) for create/edit
+- Modify ActivityTimeline component to support loanId prop
+- Add loading skeleton for detail page
+
+**Notes:**
+- loans table does NOT have a notes field (only lenderName, amount, interestRate, monthlyRepayment, termMonths, startDate, status)
+- ActivityTimeline currently expects events prop, needs modification to accept loanId and fetch events internally
+- Activity tab shows placeholder until ActivityTimeline is modified
+
+**Ready for:** Complete Task 6 (dialog + ActivityTimeline modification) OR proceed to Task 7 (costs page)
+
+## [2026-02-06 22:15] Task 6: Loan Dialog Component - COMPLETE
+
+**What was done:**
+- Created `src/components/loan-dialog.tsx` following exact pattern from `contact-dialog.tsx`
+- Implemented controlled inputs with useState for all 7 fields
+- Supports both create mode (no loan prop) and edit mode (loan prop provided)
+- Form fields with Hebrew labels:
+  - lenderName: "שם מלווה" (required)
+  - amount: "סכום (₪)" (required)
+  - interestRate: "ריבית שנתית (%)" (optional)
+  - monthlyRepayment: "תשלום חודשי (₪)" (optional)
+  - termMonths: "תקופה (חודשים)" (optional)
+  - startDate: "תאריך התחלה" (optional)
+  - status: "סטטוס" (required, dropdown with loanStatusLabels)
+- Button text:
+  - Create trigger: "הלוואה חדשה"
+  - Edit trigger: Pencil icon (or children prop)
+  - Submit: "שמור"
+- Calls createLoan/updateLoan server actions from loans.ts
+- Toast notifications: "ההלוואה נשמרה בהצלחה" (success), "שגיאה בשמירת ההלוואה" (error)
+- Closes dialog on successful save
+
+**Key Implementation Details:**
+- Numeric fields (amount, interestRate, monthlyRepayment) stored as strings in DB (Drizzle numeric type)
+- Passed as strings to server actions (no parseFloat conversion)
+- termMonths converted to integer for DB storage
+- startDate converted to Date object for DB storage
+- Status field uses type assertion to satisfy TypeScript union type
+- Select onValueChange handler casts string to loan status union type
+
+**Verification:**
+- ✅ lsp_diagnostics clean (no errors)
+- ✅ npm run build passes (0 errors, compiled in 1301.9ms)
+- ✅ All routes appear in build output: /loans, /loans/[id]
+
+**Files changed:**
+- src/components/loan-dialog.tsx (new, 186 lines)
+
+**Pattern Consistency:**
+- Follows contact-dialog.tsx exactly:
+  - "use client" directive
+  - Controlled inputs with useState
+  - DialogTrigger renders button (create) or children (edit)
+  - handleSubmit calls server action + toast
+  - Close dialog on success
+  - No react-hook-form or Zod validation
+
+**Ready for:** Task 7 (costs pages) or Task 8 (costs dialog)
+
+## [2026-02-06 22:45] Task 6: ActivityTimeline Component - loanId Support - COMPLETE
+
+**What was done:**
+- Modified `src/components/activity-timeline.tsx` to support optional `loanId` prop
+- Updated ActivityTimelineProps interface to include `loanId?: string`
+- Added imports: `addLoanMessage`, `deleteLoanMessage` from `src/app/actions/loans`
+- Modified `handleSubmit()` to use conditional logic:
+  - If `loanId` provided: calls `addLoanMessage(loanId, content, createdAt)`
+  - If `offerId` provided: calls existing `addMessage({ mortgageId, offerId }, content, customDate)`
+  - Converts customDate string to Date object for loan messages (matches addLoanMessage signature)
+- Modified `handleDelete()` to use conditional logic:
+  - If `loanId` provided: calls `deleteLoanMessage(eventId)`
+  - Otherwise: calls existing `deleteMessage(eventId)`
+- Kept all existing offerId functionality unchanged
+- No visual changes or event display logic modifications
+
+**Key Implementation Details:**
+- Component remains client-side ("use client")
+- Conditional logic based on prop presence (loanId takes precedence in logic flow)
+- Date handling: customDate string → Date object for loan messages (addLoanMessage expects Date)
+- Existing offerId path unchanged: still uses customDate string (addMessage expects string)
+- Events display logic unchanged: component still receives events prop and renders them identically
+
+**Verification:**
+- ✅ lsp_diagnostics clean on src/components/activity-timeline.tsx (0 errors, 0 warnings)
+- ✅ npm run build passes (0 errors, compiled in 1230.8ms)
+- ✅ All routes appear in build output: /loans, /loans/[id], /offers, /offers/[id]
+- ✅ No TypeScript errors or warnings
+
+**Files changed:**
+- src/components/activity-timeline.tsx (+3 lines: 1 import, 1 prop, 2 conditional branches)
+
+**Pattern Consistency:**
+- Follows existing conditional pattern from activity.ts (if offerId else if mortgageId)
+- Reuses existing server action pattern (call from event handlers)
+- Maintains backward compatibility: offerId path works exactly as before
+
+**Ready for:** Task 7 (costs pages) or complete Task 6 (integrate ActivityTimeline into loan detail page)
+
+## [2026-02-06 23:00] Task 6: Loan Detail Loading Skeleton - COMPLETE
+
+**What was done:**
+- Created `src/app/(dashboard)/loans/[id]/loading.tsx` - Loading skeleton for loan detail page
+- Matches structure of loan detail page:
+  - Header section: back button skeleton, title skeleton, badge + date skeleton, delete button skeleton
+  - 4 summary cards (grid: sm:grid-cols-2 lg:grid-cols-4) with CardHeader + CardContent skeletons
+  - Tabs section: 2 tab triggers (Activity, Details) + Card with content skeleton
+- Follows pattern from `src/app/(dashboard)/offers/[id]/loading.tsx`
+- Uses Skeleton component from `@/components/ui/skeleton`
+- Uses Card, CardHeader, CardContent from `@/components/ui/card`
+
+**Verification:**
+- ✅ lsp_diagnostics clean (0 errors, 0 warnings)
+- ✅ npm run build passes (0 errors, compiled in 1268.3ms)
+- ✅ Route /loans/[id] appears in build output as dynamic route
+
+**Files changed:**
+- src/app/(dashboard)/loans/[id]/loading.tsx (new, 45 lines)
+
+**Pattern Consistency:**
+- Follows offers/[id]/loading.tsx structure exactly
+- Header: back button + title + badge + delete button
+- Summary cards: 4 cards (vs 2 in offers) matching loan detail page
+- Tabs: 2 tabs (Activity, Details) matching loan detail page
+- All skeletons use consistent sizing and spacing
+
+**Ready for:** Task 7 (costs pages)

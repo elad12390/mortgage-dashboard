@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { addMessage, deleteMessage } from "@/app/actions/activity";
+import { addLoanMessage, deleteLoanMessage } from "@/app/actions/loans";
 import { STATUS_LABELS, STATUS_COLORS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Send, X, ArrowRight, Clock } from "lucide-react";
@@ -13,6 +14,7 @@ import type { ActivityEvent } from "@/db/schema";
 interface ActivityTimelineProps {
   mortgageId?: string;
   offerId?: string;
+  loanId?: string;
   events: ActivityEvent[];
 }
 
@@ -46,6 +48,7 @@ function toLocalDatetimeString(date: Date): string {
 export function ActivityTimeline({
   mortgageId,
   offerId,
+  loanId,
   events,
 }: ActivityTimelineProps) {
   const [message, setMessage] = useState("");
@@ -60,11 +63,19 @@ export function ActivityTimeline({
 
     setIsPending(true);
     try {
-      await addMessage(
-        { mortgageId, offerId },
-        trimmed,
-        customDate || undefined
-      );
+      if (loanId) {
+        await addLoanMessage(
+          loanId,
+          trimmed,
+          customDate ? new Date(customDate) : undefined
+        );
+      } else {
+        await addMessage(
+          { mortgageId, offerId },
+          trimmed,
+          customDate || undefined
+        );
+      }
       setMessage("");
       setCustomDate("");
       setShowDatePicker(false);
@@ -76,7 +87,11 @@ export function ActivityTimeline({
   async function handleDelete(eventId: string) {
     setIsPending(true);
     try {
-      await deleteMessage(eventId);
+      if (loanId) {
+        await deleteLoanMessage(eventId);
+      } else {
+        await deleteMessage(eventId);
+      }
     } finally {
       setIsPending(false);
     }
