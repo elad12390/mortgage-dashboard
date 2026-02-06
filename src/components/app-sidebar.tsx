@@ -16,6 +16,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { MortgageSwitcher } from "@/components/mortgage-switcher";
 
 const navItems = [
   { title: "Dashboard", href: "/", icon: Home },
@@ -24,7 +25,20 @@ const navItems = [
   { title: "Members", href: "/members", icon: UserPlus },
 ];
 
-export function AppSidebar() {
+type Mortgage = {
+  id: string;
+  propertyValue: string | null;
+  role: "owner" | "member";
+  offersCount: number;
+};
+
+export function AppSidebar({
+  mortgages = [],
+  activeMortgageId,
+}: {
+  mortgages?: Mortgage[];
+  activeMortgageId?: string;
+}) {
   const pathname = usePathname();
 
   return (
@@ -32,6 +46,7 @@ export function AppSidebar() {
       <SidebarHeader className="border-b px-6 py-4">
         <h1 className="text-lg font-semibold">Mortgage Compare</h1>
       </SidebarHeader>
+      <MortgageSwitcher mortgages={mortgages} activeMortgageId={activeMortgageId} />
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
