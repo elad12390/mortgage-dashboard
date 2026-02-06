@@ -447,7 +447,7 @@ Task 1 (DB schema: loans, extra_costs, payment_milestones tables + activity_even
 
 ---
 
-- [ ] 5. Create milestone server actions + timeline aggregation (`src/app/actions/milestones.ts`)
+- [x] 5. Create milestone server actions + timeline aggregation (`src/app/actions/milestones.ts`)
 
   **What to do**:
   - New file `src/app/actions/milestones.ts` with these server actions:

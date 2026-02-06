@@ -94,3 +94,17 @@ Adding financial tracking to mortgage dashboard: loans (for 25% down payment), e
 - src/lib/constants.ts (+57 lines, 6 new exports)
 
 **Ready for:** Task 3 (server actions for loans)
+
+## Task 5: Milestones Server Actions + Timeline Aggregation - COMPLETED ✓
+
+**What was done:**
+- Added `src/app/actions/milestones.ts` with 5 server actions for milestones CRUD and timeline aggregation.
+- Implemented access control using `requireUserId()` + `verifyMortgageAccess()`.
+- Timeline aggregation merges payment milestones, extra costs (with dueDate), and loan start dates into consistent entries.
+
+**Verification:**
+- ✅ lsp_diagnostics clean on src/app/actions/milestones.ts
+- ✅ npm run build passes (0 errors)
+
+**Files changed:**
+- src/app/actions/milestones.ts (new)
