@@ -18,6 +18,7 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { MortgageSwitcher } from "@/components/mortgage-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const mainNav = [
   { title: "Dashboard", href: "/", icon: Home },
@@ -103,9 +104,12 @@ export function AppSidebar({
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="border-t border-sidebar-border p-4">
-        <div className="flex items-center gap-3">
-          <UserButton afterSignOutUrl="/sign-in" />
-          <span className="text-sm text-sidebar-foreground/60">Account</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <UserButton afterSignOutUrl="/sign-in" />
+            <span className="text-sm text-sidebar-foreground/60">Account</span>
+          </div>
+          <ThemeToggle />
         </div>
       </SidebarFooter>
     </Sidebar>

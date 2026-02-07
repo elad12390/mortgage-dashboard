@@ -124,32 +124,194 @@
   }
 }
 
+/* ─── Elevation / Shadow Scale ─── */
+:root {
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+  --shadow-3: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.06);
+  --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.06);
+  --shadow-glow: 0 0 20px oklch(0.65 0.14 175 / 15%);
+  --ease-spring: cubic-bezier(0.22, 0.68, 0, 1.2);
+  --ease-standard: cubic-bezier(0.2, 0.9, 0.3, 1);
+  --duration-fast: 120ms;
+  --duration-med: 220ms;
+  --duration-slow: 360ms;
+}
+
+.dark {
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.25), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --shadow-3: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+  --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.35), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  --shadow-glow: 0 0 20px oklch(0.65 0.14 175 / 10%);
+}
+
+/* ─── Fluid Typography ─── */
+:root {
+  --step-0: clamp(0.875rem, 0.83rem + 0.2vw, 1rem);
+  --step-1: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  --step-2: clamp(1.5rem, 1.3rem + 0.9vw, 2.25rem);
+  --step-3: clamp(2rem, 1.6rem + 1.5vw, 3rem);
+}
+
+/* ─── Keyframe Animations ─── */
 @keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── Animation Utilities ─── */
 .animate-fade-in {
-  animation: fade-in 0.4s ease-out both;
+  animation: fade-in 0.4s var(--ease-standard) both;
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 0.5s ease-out both;
+  animation: fade-in-up 0.5s var(--ease-standard) both;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.3s var(--ease-standard) both;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s var(--ease-standard) both;
+}
+
+/* Stagger children with animation-delay via style attr or nth-child */
+.stagger-children > * {
+  animation: fade-in-up 0.4s var(--ease-standard) both;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 60ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 120ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 180ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 360ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 420ms; }
+
+/* ─── Skeleton / Shimmer ─── */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background: oklch(0.92 0.01 180);
+}
+.dark .skeleton {
+  background: oklch(0.25 0.02 180);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, oklch(1 0 0 / 20%), transparent);
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+.dark .skeleton::after {
+  background: linear-gradient(90deg, transparent, oklch(1 0 0 / 8%), transparent);
+}
+
+/* ─── Card Polish ─── */
+.card-hover {
+  transition: transform var(--duration-fast) var(--ease-standard),
+              box-shadow var(--duration-fast) var(--ease-standard),
+              border-color var(--duration-fast) var(--ease-standard);
+  box-shadow: var(--shadow-1);
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-3);
+  border-color: oklch(0.65 0.14 175 / 30%);
+}
+
+.card-glow {
+  transition: box-shadow var(--duration-med) var(--ease-standard);
+}
+.card-glow:hover {
+  box-shadow: var(--shadow-2), var(--shadow-glow);
+}
+
+/* ─── Table Polish ─── */
+.table-polished tbody tr {
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+.table-polished tbody tr:hover {
+  background-color: oklch(0.97 0.01 180);
+}
+.dark .table-polished tbody tr:hover {
+  background-color: oklch(0.22 0.02 180);
+}
+.table-polished tbody tr:nth-child(even) {
+  background-color: oklch(0.985 0.002 180 / 60%);
+}
+.dark .table-polished tbody tr:nth-child(even) {
+  background-color: oklch(0.18 0.015 180 / 60%);
+}
+
+/* ─── Gradient Accents ─── */
+.gradient-border-top {
+  position: relative;
+}
+.gradient-border-top::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 9999px 9999px 0 0;
+  background: linear-gradient(90deg, oklch(0.55 0.125 175), oklch(0.65 0.14 175), oklch(0.72 0.10 180));
+}
+
+/* ─── Sidebar Active Accent ─── */
+[data-slot="sidebar-menu-button"][data-active="true"] {
+  position: relative;
+  border-radius: 0.5rem;
+}
+[data-slot="sidebar-menu-button"][data-active="true"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 15%;
+  bottom: 15%;
+  width: 3px;
+  border-radius: 0 9999px 9999px 0;
+  background: oklch(0.65 0.14 175);
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

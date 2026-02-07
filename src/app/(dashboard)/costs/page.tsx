@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getMortgage } from "@/app/actions/mortgage";
 import { getCosts, getCostsSummary, updateCost, deleteCost } from "@/app/actions/costs";
 import { costCategoryLabels, costPaymentStatusLabels, costPaymentStatusColors } from "@/lib/constants";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Receipt } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { CostDialog } from "@/components/cost-dialog";
@@ -39,12 +39,12 @@ export default async function CostsPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold tracking-tight">Extra Costs</h2>
+        <h2 className="text-[length:var(--step-2)] font-bold tracking-tight">Extra Costs</h2>
         <CostDialog mortgageId={mortgage.id} />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 stagger-children">
+        <Card className="card-hover">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Costs</CardTitle>
           </CardHeader>
@@ -55,7 +55,7 @@ export default async function CostsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-hover">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Paid</CardTitle>
           </CardHeader>
@@ -66,7 +66,7 @@ export default async function CostsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-hover">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Remaining</CardTitle>
           </CardHeader>
@@ -77,7 +77,7 @@ export default async function CostsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-hover">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Overdue</CardTitle>
           </CardHeader>
@@ -94,17 +94,19 @@ export default async function CostsPage() {
         </Card>
       </div>
 
-      <Card>
+      <Card className="card-hover">
         <CardContent className="p-0">
           {costs.length === 0 ? (
-            <div className="p-6 text-center">
-              <p className="text-muted-foreground mb-4">
-                No extra costs yet
-              </p>
+            <div className="p-12 text-center">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
+                <Receipt className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <p className="text-lg font-medium">No extra costs yet</p>
+              <p className="mt-1 mb-4 text-sm text-muted-foreground">Track fees, taxes, and other expenses.</p>
               <CostDialog mortgageId={mortgage.id} />
             </div>
           ) : (
-            <Table>
+            <Table className="table-polished">
               <TableHeader>
                 <TableRow>
                   <TableHead>Category</TableHead>

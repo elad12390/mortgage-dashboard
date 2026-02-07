@@ -60,7 +60,7 @@ export default async function OfferDetailPage({ params }: PageProps) {
       : 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" asChild>
           <Link href="/offers">
@@ -68,7 +68,7 @@ export default async function OfferDetailPage({ params }: PageProps) {
           </Link>
         </Button>
         <div className="flex-1">
-          <h2 className="text-2xl font-bold">{offer.bankName}</h2>
+          <h2 className="text-[length:var(--step-2)] font-bold tracking-tight">{offer.bankName}</h2>
           {getBankParent(offer.bankName) && (
             <span className="text-sm text-muted-foreground">
               Subsidiary of {getBankParent(offer.bankName)}
@@ -95,29 +95,29 @@ export default async function OfferDetailPage({ params }: PageProps) {
         />
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Card>
+      <div className="grid gap-4 sm:grid-cols-2 stagger-children">
+        <Card className="card-hover">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Total Track Amount
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-xl font-bold">
+            <div className="text-2xl font-bold">
               {totalTrackAmount > 0
                 ? `₪${totalTrackAmount.toLocaleString()}`
                 : "—"}
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="card-hover">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Weighted Avg Rate
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-xl font-bold">
+            <div className="text-2xl font-bold">
               {weightedRate > 0 ? `${weightedRate.toFixed(2)}%` : "—"}
             </div>
           </CardContent>
@@ -137,7 +137,7 @@ export default async function OfferDetailPage({ params }: PageProps) {
         </TabsList>
 
         <TabsContent value="tracks" className="mt-4">
-          <Card>
+          <Card className="card-hover">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Tracks</CardTitle>
               <TrackDialog offerId={id} />
@@ -148,7 +148,7 @@ export default async function OfferDetailPage({ params }: PageProps) {
                   No tracks added yet.
                 </div>
               ) : (
-                <Table>
+                <Table className="table-polished">
                   <TableHeader>
                     <TableRow>
                       <TableHead>Type</TableHead>
@@ -198,7 +198,7 @@ export default async function OfferDetailPage({ params }: PageProps) {
         </TabsContent>
 
         <TabsContent value="contacts" className="mt-4">
-          <Card>
+          <Card className="card-hover">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Contacts</CardTitle>
               <ContactDialog offerId={id} />
@@ -209,7 +209,7 @@ export default async function OfferDetailPage({ params }: PageProps) {
                   No contacts added yet.
                 </div>
               ) : (
-                <Table>
+                <Table className="table-polished">
                   <TableHeader>
                     <TableRow>
                       <TableHead>Name</TableHead>
@@ -257,7 +257,7 @@ export default async function OfferDetailPage({ params }: PageProps) {
         </TabsContent>
 
         <TabsContent value="activity" className="mt-4">
-          <Card>
+          <Card className="card-hover">
             <CardHeader>
               <CardTitle>Activity</CardTitle>
             </CardHeader>
@@ -268,7 +268,7 @@ export default async function OfferDetailPage({ params }: PageProps) {
         </TabsContent>
 
         <TabsContent value="edit" className="mt-4">
-          <Card>
+          <Card className="card-hover">
             <CardHeader>
               <CardTitle>Edit Offer</CardTitle>
             </CardHeader>

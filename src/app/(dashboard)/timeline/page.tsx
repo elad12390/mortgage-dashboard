@@ -44,12 +44,12 @@ export default async function TimelinePage() {
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold tracking-tight">Timeline</h2>
+        <h2 className="text-[length:var(--step-2)] font-bold tracking-tight">Timeline</h2>
         <MilestoneDialog mortgageId={mortgage.id} />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
+      <div className="grid gap-4 md:grid-cols-3 stagger-children">
+        <Card className="card-hover">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Next Payment</CardTitle>
           </CardHeader>
@@ -70,7 +70,7 @@ export default async function TimelinePage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-hover">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Upcoming Total</CardTitle>
           </CardHeader>
@@ -84,7 +84,7 @@ export default async function TimelinePage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-hover">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Completed</CardTitle>
           </CardHeader>
@@ -94,7 +94,7 @@ export default async function TimelinePage() {
         </Card>
       </div>
 
-      <Card>
+      <Card className="card-hover">
         <CardHeader>
               <CardTitle>Milestones</CardTitle>
         </CardHeader>
@@ -105,7 +105,7 @@ export default async function TimelinePage() {
               <MilestoneDialog mortgageId={mortgage.id} />
             </div>
           ) : (
-            <Table>
+            <Table className="table-polished">
               <TableHeader>
                 <TableRow>
                     <TableHead>Name</TableHead>
@@ -164,7 +164,7 @@ export default async function TimelinePage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="card-hover">
         <CardHeader>
               <CardTitle>All Events</CardTitle>
         </CardHeader>
@@ -186,7 +186,7 @@ export default async function TimelinePage() {
                 return (
                   <div
                     key={entry.id}
-                    className="flex items-center justify-between p-4 border rounded-lg"
+                    className="flex items-center justify-between p-4 border rounded-lg transition-colors hover:bg-muted/50"
                   >
                     <div className="flex items-center gap-4">
                       <div className="text-2xl">

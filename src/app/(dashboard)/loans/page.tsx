@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getMortgage } from "@/app/actions/mortgage";
 import { getLoans } from "@/app/actions/loans";
 import { loanStatusLabels, loanStatusColors } from "@/lib/constants";
+import { Landmark } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { LoanDialog } from "@/components/loan-dialog";
@@ -39,13 +40,13 @@ export default async function LoansPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold tracking-tight">Loans</h2>
+        <h2 className="text-[length:var(--step-2)] font-bold tracking-tight">Loans</h2>
         <LoanDialog mortgageId={mortgage.id} />
       </div>
 
       {/* Summary Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
+      <div className="grid gap-4 md:grid-cols-3 stagger-children">
+        <Card className="card-hover">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Loans</CardTitle>
           </CardHeader>
@@ -56,7 +57,7 @@ export default async function LoansPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-hover">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total Monthly Payment
@@ -69,7 +70,7 @@ export default async function LoansPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-hover">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Loans</CardTitle>
           </CardHeader>
@@ -80,14 +81,18 @@ export default async function LoansPage() {
       </div>
 
       {/* Loans Table */}
-      <Card>
+      <Card className="card-hover">
         <CardContent className="p-0">
           {loans.length === 0 ? (
-            <div className="p-6 text-center text-muted-foreground">
-              No loans yet. Create your first loan.
+            <div className="p-12 text-center">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
+                <Landmark className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <p className="text-lg font-medium">No loans yet</p>
+              <p className="mt-1 text-sm text-muted-foreground">Create your first loan to start tracking.</p>
             </div>
           ) : (
-            <Table>
+            <Table className="table-polished">
               <TableHeader>
                 <TableRow>
                   <TableHead>Lender</TableHead>

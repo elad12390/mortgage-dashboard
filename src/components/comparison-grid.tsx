@@ -84,12 +84,12 @@ export function ComparisonGrid({ offers }: ComparisonGridProps) {
   }
 
   return (
-    <Card>
+    <Card className="card-hover">
       <CardHeader>
         <CardTitle>Bank Comparison</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <Table>
+        <Table className="table-polished">
           <TableHeader>
             <TableRow>
               <TableHead>Bank</TableHead>
